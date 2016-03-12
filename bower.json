@@ -4,5 +4,7 @@
 	"homepage": "https://github.com/j040p3d20/angular-tree-directive",
 	"authors": [
 		"j040p3d20 <j040p3d20@gmail.com>"
-	]
+	],
+	"main": "angular-tree-directive.js",
+	"ignore": []
 }
