@@ -1,1 +1,1 @@
-# angular-tree-table
+# angular-tree-directive

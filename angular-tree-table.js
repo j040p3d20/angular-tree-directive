@@ -1,7 +1,7 @@
 
 angular
-.module( 'angularTreeTable' , [] )
-.directive( 'angularTreeTable' , function ( $compile , $timeout ) {
+.module( 'angularTreeDirective' , [] )
+.directive( 'angularTreeDirective' , function ( $compile , $timeout ) {
 	return {
 		scope : {
 			rows : '=',
