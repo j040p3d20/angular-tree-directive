@@ -11,7 +11,7 @@ angular
 				element.empty();
 				scope.open = true;
 				appendRows( element , scope , rows );
-			});
+			} , true );
 			
 			function appendRows( element , scope , rows )
 			{
