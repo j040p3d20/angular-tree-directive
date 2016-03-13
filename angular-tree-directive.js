@@ -3,14 +3,11 @@ angular
 .module( 'angularTreeDirective' , [] )
 .directive( 'angularTreeDirective' , function ( $compile , $timeout ) {
 	return {
-		scope : {
-			rows : '=',
-			columns : '='
-		},
+		scope : true,
 		transclude : true,
 		link : function( scope , element , attrs , controller , transcludeFn ){
 			
-			scope.$watch('rows', function( rows ) {
+			scope.$watch( attrs.rows , function( rows ) {
 				element.empty();
 				scope.open = true;
 				appendRows( element , scope , rows );
