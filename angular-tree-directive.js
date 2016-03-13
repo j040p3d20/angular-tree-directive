@@ -49,9 +49,9 @@ angular
 					element.append( $compile( clone )( scope ) );
 				} );
 				
-				if ( row.rows )
+				if ( row[attrs.rows] )
 				{
-					appendRows( element , scope , row.rows );
+					appendRows( element , scope , row[attrs.rows] );
 				}
 			}
 			
