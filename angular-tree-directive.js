@@ -1,70 +1,69 @@
 
+/**
+ * angular-tree-directive
+ *
+ * Copyright (c) 2016 João Domingues j040p3d20@gmail.com
+ * https://github.com/j040p3d20
+ *
+ * License: GPLv3
+ */
 angular
 .module( 'angularTreeDirective' , [] )
+/**
+ *
+ * this directive recusively iterates a tree of data
+ * and for each element, renders the appropriate tree
+ * node using the transcluded content.
+ * 
+ * the scope is not isolated so whatever is available
+ * outside the directive scope is also available for
+ * rendering the transcluded template. 
+ * 
+ * Attributes :
+ * 
+ * 		nodes :
+ * 			the name of the scope property containing the list of nodes
+ * 			to render is passed as attribute "nodes" . While rendering
+ * 			each of the nodes with the provided template, the child scope
+ * 			will have access to the properties "node" and "depth"
+ * 
+ */
 .directive( 'angularTreeDirective' , function ( $compile , $timeout ) {
 	return {
 		scope : true,
 		transclude : true,
 		link : function( scope , element , attrs , controller , transcludeFn ){
 			
-			scope.$watch( attrs.rows , function( rows ) {
+			scope.$watch( attrs.nodes , function( nodes ) {
 				element.empty();
-				scope.open = true;
-				appendRows( element , scope , rows );
+				appendNodes( element , scope , nodes );
 			} , true );
 			
-			function appendRows( element , scope , rows )
+			function appendNodes( element , scope , nodes )
 			{
-				if ( rows && rows.length )
+				if ( nodes && nodes.length )
 				{
-					for ( var i = 0 ; i < rows.length ; i++ )
+					for ( var i = 0 ; i < nodes.length ; i++ )
 					{
-						var row = rows[i];
-						appendRow( element, scope.$new() , row );
+						var node = nodes[i];
+						appendNode( element, scope.$new() , node );
 					}
 				}
 			}
 			
-			function appendRow( element, scope, row )
+			function appendNode( element, scope, node )
 			{
-				scope.row = row;
-				scope.open = false;
+				scope.node = node;
 				scope.depth = ( scope.depth == undefined ? 0 : 1 + scope.$parent.depth );
-				
-				scope.toggle = function(){
-					var open = ! this.open;
-					$timeout(function(){
-						if ( open )
-						{
-							scope.open = open;
-						}
-						else
-						{
-							close( scope );
-						}
-					},0);
-				}
 				
 				transcludeFn( scope, function( clone , scope ){
 					element.append( $compile( clone )( scope ) );
 				} );
 				
-				if ( row[attrs.rows] )
+				if ( node[attrs.nodes] )
 				{
-					appendRows( element , scope , row[attrs.rows] );
+					appendNodes( element , scope , node[attrs.nodes] );
 				}
-			}
-			
-			function close( scope )
-			{
-				if ( scope.$$childHead )
-				{
-					for ( var child = scope.$$childHead ; child != null ; child = child.$$nextSibling )
-					{
-						close( child );
-					}
-				}
-				scope.open = false;
 			}
 			
 		}
