@@ -35,8 +35,18 @@ angular
 		link : function( scope , element , attrs , controller , transcludeFn ){
 			
 			scope.$watch( attrs.nodes , function( nodes ) {
-				element.empty();
-				appendNodes( element , scope , nodes );
+				
+				if ( scope.scheduledUpdate )
+				{
+					$timeout.cancel( scope.scheduledUpdate );
+				}
+				
+				scope.scheduledUpdate = $timeout(function(){
+					element.empty();
+					appendNodes( element , scope , nodes );
+					scope.scheduledUpdate = null;
+				},500);
+				
 			} , true );
 			
 			function appendNodes( element , scope , nodes )
@@ -60,7 +70,7 @@ angular
 					element.append( $compile( clone )( scope ) );
 				} );
 				
-				if ( node[attrs.nodes] )
+				if ( node.open && node[attrs.nodes] )
 				{
 					appendNodes( element , scope , node[attrs.nodes] );
 				}
